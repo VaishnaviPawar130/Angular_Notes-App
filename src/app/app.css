@@ -1,0 +1,11 @@
+.app-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.app-title {
+  text-align: center;
+  margin-bottom: 20px;
+}

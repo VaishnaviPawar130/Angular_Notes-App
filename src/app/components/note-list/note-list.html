@@ -1,0 +1,17 @@
+@if (notes.length === 0) {
+  <p class="text-center text-gray-500 dark:text-gray-600">No notes</p>
+} @else {
+  <ul class="space-y-3">
+    @for (note of notes; track note.id) {
+      <li>
+        <app-note-item
+          [note]="note"
+          (delete)="onDelete($event)"
+          (update)="onUpdate($event)"
+          (pinToggle)="onPinToggle($event)"
+          (summarize)="onSummarize($event)" 
+        />
+      </li>
+    }
+  </ul>
+}

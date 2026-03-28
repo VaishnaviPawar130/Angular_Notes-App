@@ -1,0 +1,21 @@
+<form
+  class="mb-6 flex flex-col gap-3 rounded-2xl border border-white/70 bg-white/80 p-4 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.35)] backdrop-blur dark:border-white/10 dark:bg-slate-900/70"
+  (ngSubmit)="addNote()"
+>
+  <div class="flex flex-col gap-3 sm:flex-row">
+    <input
+      [(ngModel)]="newNote"
+      name="newNote"
+      placeholder="Write your note..."
+      class="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:border-sky-500 dark:focus:ring-sky-500/20"
+    />
+
+    <button
+      type="submit"
+      [disabled]="isSaving || !newNote.trim()"
+      class="rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      {{ isSaving ? 'Adding...' : 'Add Note' }}
+    </button>
+  </div>
+</form>
