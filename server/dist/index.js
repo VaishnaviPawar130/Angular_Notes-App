@@ -26,6 +26,7 @@ app.get('/api/notes', async (_req, res) => {
         text: note.text,
         createdAt: Number(note.createdAtMs),
         pinned: Boolean(note.pinned),
+        aiSummary: note.aiSummary,
     })));
 });
 app.post('/api/notes', async (req, res) => {
@@ -45,6 +46,7 @@ app.post('/api/notes', async (req, res) => {
         text: note.text,
         createdAt: Number(note.createdAtMs),
         pinned: Boolean(note.pinned),
+        aiSummary: note.aiSummary,
     });
 });
 app.put('/api/notes/:id', async (req, res) => {
@@ -65,6 +67,7 @@ app.put('/api/notes/:id', async (req, res) => {
         text: note.text,
         createdAt: Number(note.createdAtMs),
         pinned: Boolean(note.pinned),
+        aiSummary: note.aiSummary,
     });
 });
 app.patch('/api/notes/:id/pin', async (req, res) => {
@@ -80,6 +83,7 @@ app.patch('/api/notes/:id/pin', async (req, res) => {
         text: note.text,
         createdAt: Number(note.createdAtMs),
         pinned: Boolean(note.pinned),
+        aiSummary: note.aiSummary,
     });
 });
 app.delete('/api/notes/:id', async (req, res) => {
@@ -95,7 +99,7 @@ app.delete('/api/notes/:id', async (req, res) => {
 async function start() {
     try {
         await sequelize.authenticate();
-        await sequelize.sync();
+        await sequelize.sync({ alter: true });
         app.listen(port, () => {
             console.log(`Notes API listening on http://localhost:${port}`);
         });

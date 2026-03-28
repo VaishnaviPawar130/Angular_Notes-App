@@ -121,7 +121,7 @@ app.delete('/api/notes/:id', async (req, res) => {
 async function start() {
   try {
     await sequelize.authenticate();
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     app.listen(port, () => {
       console.log(`Notes API listening on http://localhost:${port}`);
     });

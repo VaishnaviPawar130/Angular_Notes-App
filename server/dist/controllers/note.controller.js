@@ -1,4 +1,8 @@
+import { GoogleGenAI } from '@google/genai';
 import { Note } from '../models/note.model.js';
+const geminiClient = process.env.GEMINI_API_KEY
+    ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
+    : null;
 function buildSummary(text) {
     const cleanText = text.replace(/\s+/g, ' ').trim();
     if (!cleanText) {
@@ -14,6 +18,23 @@ function buildSummary(text) {
     }
     return `- ${cleanText.slice(0, 120)}`;
 }
+async function generateSummary(text) {
+    if (!geminiClient) {
+        return buildSummary(text);
+    }
+    try {
+        const response = await geminiClient.models.generateContent({
+            model: 'gemini-2.0-flash',
+            contents: `Summarize the following note in 2 to 3 concise bullet points. Avoid repeating the original wording when possible.\n\nNote:\n${text}`,
+        });
+        const summary = response.text?.trim();
+        return summary || buildSummary(text);
+    }
+    catch (error) {
+        console.error('Gemini summarize fallback:', error);
+        return buildSummary(text);
+    }
+}
 export async function summarizeNote(req, res) {
     try {
         const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -22,7 +43,7 @@ export async function summarizeNote(req, res) {
             res.status(404).json({ message: 'Note not found' });
             return;
         }
-        const summary = buildSummary(note.text);
+        const summary = await generateSummary(note.text);
         note.aiSummary = summary;
         await note.save();
         res.json({
